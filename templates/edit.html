@@ -1,0 +1,269 @@
+{% extends "layout_dashboard.html" %}
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet"/>
+<style>
+    textarea {
+        resize: none;
+    }
+    .summernote {
+        background-color: #34373b; /* Adjust this to your desired color */
+        border-color: #0085A1;
+    }
+    .note-toolbar {
+        background-color: #34373b; /* Adjust this to your desired color */
+    }
+    .note-editable {
+        background-color: #34373b; /* Adjust this to your desired color */
+        color: azure;
+        font-size: medium;
+    }
+    .note-modal-body{
+        background-color: #34373b;
+    }
+    .note-modal-title{
+        background-color: #34373b;
+        color: azure;
+    }
+    .note-modal-header{
+        background: #34373b;
+    }
+    .note-modal-footer {
+        background-color: #34373b;
+        padding: 1px 30px;
+        height: 50px; 
+    }
+    .note-image-url{
+        background-color: #34373b;
+    }
+    .note-image-input, .note-input{
+        background-color: #34373b;
+    }
+    .note-frame{
+        color: azure;
+    }
+    .note-image-input{
+        color: azure;
+        background-color: #34373b;
+    }
+    .note-icon-close{
+        color: azure;
+        opacity: 1 !important;
+        font-weight: bolder !important;
+    }
+    .form-select{
+        background-color: #34373b;
+        color: azure;
+        border-color: #0085A1;
+    }
+    .bootstrap-tagsinput {
+        width: 100%;
+    }
+    #manualInput.form-control{
+        background-color: transparent;
+        color: azure;
+        border-color: #0085A1;
+    }
+    .form-control[type=file] {
+        border-color: #0085A1;
+    }
+</style>
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.733), rgb(0, 0, 0)), url('{{ url_for('static', filename='assets/img/admin-bg.jpg') }}');">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Admin Panel</h1>
+                    <span class="subheading">The Website is Yours!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <hr>
+                <h4>Make the changes you want</h4>
+                <div class="my-5">
+                    <form name="contactForm" id="contactForm" action="/edit/{{sno}}" method="post" enctype="multipart/form-data">
+
+                        <h6>Title</h6>
+                        <div style="padding: 0; padding-top:0;" class="form-floating mb-3">
+                            <input class="form-control" id="title" name="title" type="text" placeholder="title..." value="{{post.title}}" required style="padding: 0; height:2.5rem; color: azure"/>
+                            <div class="invalid-feedback">Title is required.</div>
+                        </div>
+                        <h6>Subtitle</h6>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="subtitle" name="subtitle" placeholder="Subtitle..." value="{{post.subtitle}}" style="padding: 0; height:2.5rem; color: azure"/>
+                            <div class="invalid-feedback">Subtitle is required.</div>
+                        </div>
+
+                        <h6>Slug</h6>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="slug" name="slug" type="varchar" placeholder="Slug..." value="{{post.slug}}" required style="padding: 0; height:2.5rem; color: azure"/>
+                            <div class="invalid-feedback">Slug is required.</div>
+                        </div>
+
+                        <h6>Main Post</h6>
+                        <div class="form-floating mb-3">
+                            <textarea id="summernote" class="form-control summernote" name="content" oninput="resizeTextarea(this)" style="padding-top: 0.5rem; background-color: #d9d9d970;">{{post.content}}</textarea>
+                            <div class="invalid-feedback">Content is required.</div>
+                        </div>
+
+                        <h6>Cover Image</h6>
+                        <div class="mb-3">
+                            <input type="file" name="file1" class="form-control">
+                        </div>
+
+                        <h6>Category</h6>
+                        <div class="mb-3">
+                            <select class="form-select" id="classSelect" name="category" aria-label="Class select">
+                                <option value="General Order" {% if post.category == "General Order" %}selected{% endif %}>General Order</option>
+                                <option value="Foolish Talks" {% if post.category == "Foolish Talks" %}selected{% endif %}>Foolish Talks</option>
+                                <option value="Poetry" {% if post.category == "Poetry" %}selected{% endif %}>Poetry</option>
+                                <option value="Gallery" {% if post.category == "Gallery" %}selected{% endif %}>Gallery</option>
+                                <option value="Memorials" {% if post.category == "Memorials" %}selected{% endif %}>Memorials</option>
+                            </select>
+                        </div>
+
+                        <h6>Volume</h6>
+                        <div class="mb-3">
+                            <select class="form-select" id="volumeSelect" name="volume" aria-label="Class select">
+                                <option value="Volume I" {% if post.volume == "Volume I" %}selected{% endif %}>Volume I</option>
+                                <option value="Volume II" {% if post.volume == "Volume II" %}selected{% endif %}>Volume II</option>
+                                <option value="Jadore" {% if post.volume == "Jadore" %}selected{% endif %}>Jadore</option> 
+                            </select>
+                            <input type="text" id="volume_link" name="volume_link" value="" style="display: none;">
+                        </div>
+
+                        <h6>Labels</h6>
+                        <div class="mb-3">
+                            <input type="text" id="manualInput" class="form-control" name="labels" value="{{post.labels}}" data-role="tagsinput" placeholder="Add options" />
+                        </div>
+
+                        <h6>Author</h6>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="author" name="author" placeholder="Author..." value="{{post.author}}" required style="padding: 0; height:2.5rem; color: azure"/> 
+                            <div class="invalid-feedback">Post always have an Author...</div>
+                        </div>
+
+                        <h6>Date</h6>
+                        <div class="form-floating mb-3">
+                            <input type="datetime-local" class="form-control" id="date" name="dated" placeholder="Date..." value="{{post.dated}}" required style="padding: 0; height:2.5rem; color: azure"/>   
+                            <div class="invalid-feedback">Date is required.</div>
+                        </div>
+
+                        <!-- Container for buttons -->
+                        <div class="d-flex justify-content-between">
+                            <!-- Button to disable datetime input -->
+                            <button type="button" class="btn btn-secondary" id="disableDateButton" style="margin-top: 1rem;" onclick="toggleDateInput()">Disable Date Input</button>
+                            
+                            <!-- Submit Button -->
+                            <button class="btn btn-primary text-uppercase" id="submitButton" style="margin-top: 1rem;" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function toggleDateInput() {
+        var dateInput = document.getElementById('date');
+        var button = document.getElementById('disableDateButton');
+
+        if (dateInput.disabled) {
+            dateInput.disabled = false;
+            button.textContent = 'Disable Date Input'; // Change button text to indicate action
+        } else {
+            dateInput.disabled = true;
+            button.textContent = 'Enable Date Input'; // Change button text to indicate action
+        }
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        $(".summernote").summernote({
+            minHeight: null,
+            maxHeight: null,
+            focus: true,
+            toolbar: [
+                ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']],
+                ['font', ['bold', 'italic', 'underline', 'clear', 'fontname']],
+                ['style', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph', 'height', 'style']],
+                ['insert', ['link', 'picture', 'video', 'hr']],
+            ],
+            callbacks: {
+                onImageUpload: function(files) {
+                    uploadImage(files[0]);
+                }
+            }
+        });
+
+        function uploadImage(file) {
+            var data = new FormData();
+            data.append("file", file);
+
+            $.ajax({
+                url: '/upload_image',
+                method: 'POST',
+                data: data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(response) {
+                    if(response.location) {
+                        $('.summernote').summernote('insertImage', response.location);
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const volumeSelect = document.getElementById('volumeSelect');
+        const volumeLink = document.getElementById('volume_link');
+
+        // Function to update the hidden input based on the selected option
+        function updateVolumeLink() {
+            const selectedValue = volumeSelect.value; // Get the value of the selected option
+
+            if (selectedValue === "Volume I"){
+                volumeLink.value = 'volume_i';
+            } else if (selectedValue === "Volume II"){
+                volumeLink.value = 'volume_ii';
+            } else {
+                volumeLink.value = 'jadore';
+            }
+        }
+
+        // Set the initial value of the hidden input based on the selected option
+        updateVolumeLink();
+
+        // Add an event listener to update the hidden input whenever the selected option changes
+        volumeSelect.addEventListener('change', updateVolumeLink);
+    });
+</script>
+{% endblock %}

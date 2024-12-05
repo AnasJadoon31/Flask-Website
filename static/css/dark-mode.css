@@ -1,0 +1,43 @@
+/* Custom Dark Mode Styles */
+
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  .bg-light {
+    background-color: #1e1e1e !important;
+  }
+  
+  .bg-dark {
+    background-color: #121212 !important;
+  }
+  
+  .text-light {
+    color: #e0e0e0 !important;
+  }
+  
+  .text-dark {
+    color: #e0e0e0 !important;
+  }
+  
+  .border-light {
+    border-color: #343a40 !important;
+  }
+  
+  .border-dark {
+    border-color: #121212 !important;
+  }
+  
+  .btn-light {
+    background-color: #343a40;
+    color: #e0e0e0;
+  }
+  
+  .btn-dark {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+  }
+  
+  /* Add more custom styles as needed */
+  

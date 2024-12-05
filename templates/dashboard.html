@@ -1,0 +1,79 @@
+{% extends "layout_dashboard.html" %}
+{% block content %}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.733), rgb(0, 0, 0)), url('{{ url_for('static', filename='assets/img/admin-bg.jpg') }}');">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7 text-center">
+                <div class="site-heading">
+                    <h1>Admin Panel</h1>
+                    <span class="subheading">The Website is Yours!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-12 col-lg-10 col-xl-9">
+            <!-- Post preview-->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <!-- <span aria-hidden="true">&times;</span> -->
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <hr>
+            <h2 class="text-center">Upload Files</h2>
+            <form name="uploader" action="/uploader" method="POST" enctype="multipart/form-data" class="mb-4">
+                <div class="mb-3">
+                    <input type="file" name="file1" class="form-control">
+                </div>
+                <button class="btn btn-primary text-uppercase">Upload</button>
+            </form>
+            <hr>
+            <h2 class="text-center">Add a New Post</h2>
+                <div class="mb-3">
+                 <a href="/edit/0" style="margin: 1rem auto; display: block;" class="btn btn-primary text-uppercase">New Post</a>
+                </div>
+            <hr>
+            <h2 class="text-center">Edit Posts</h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">S.No.</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Preview</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                        <tr>
+                            <th scope="row">{{ post.sno }}</th>
+                            <td>{{ post.title }}</td>
+                            <td>{{ post.dated }}</td>
+                            <td><a href="/preview/{{ post.slug }}" class="btn btn-primary text-uppercase">Preview</a></td>
+                            <td><a href="/edit/{{ post.sno }}" class="btn btn-primary text-uppercase">Edit</a></td>
+                            <td><a href="/delete/{{ post.sno }}" class="btn btn-primary text-uppercase">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% for post in posts %}
+                    <div class="post-preview">
+                        <a href="/post/{{post.slug}}">
+                            <h2 class="post-title">{{post.title}}</h2>
+                            <h3 class="post-subtitle" style="line-height: 1;">{{post.subtitle}}</h3>
+                        </a>
+                        <p class="post-meta">
+                            Posted to
+                            <a href="/{{post.volume_link}}">Jadistan: {{post.volume}}</a>
+                             by
+                            <a href="/about">{{post.author}}</a>
+                            on {{post.dated}}
+                        </p>
+                        <!-- Share Buttons -->
+                <div class="d-flex justify-content-start mb-3">
+                    <a class="btn btn-outline-primary btn-sm me-2" href="https://twitter.com/intent/tweet?url={{ url_for('post_route', post_slug=post.slug, _external=True) }}&text={{ post.title }}" target="_blank">Share on Twitter</a>
+                    <a class="btn btn-outline-primary btn-sm me-2" href="https://www.facebook.com/share_channel?u={{ url_for('post_route', post_slug=post.slug, _external=True) }}" target="_blank">Share on Facebook</a>
+                    <a class="btn btn-outline-primary btn-sm me-2" href="https://www.linkedin.com/shareArticle?mini=true&url={{ url_for('post_route', post_slug=post.slug, _external=True) }}&title={{ post.title }}&summary={{ post.subtitle }}" target="_blank">Share on LinkedIn</a>
+                    <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ url_for('post_route', post_slug=post.slug, _external=True) }}')">Copy Link</button>
+                </div>
+                        <hr>
+                    </div>      
+{% endfor %}
+<!-- Pager -->
+<div id="pagination-controls">
+    <a id="prev-btn" href="?page={{ page - 1 if page > 1 else 1 }}&category={{ selected_category }}&volume={{ selected_volume }}"
+       class="btn btn-primary {% if page <= 1 %}disabled{% endif %}">Previous</a>
+
+    <a id="next-btn" href="?page={{ page + 1 if page < total_pages else total_pages }}&category={{ selected_category }}&volume={{ selected_volume }}"
+       class="btn btn-primary {% if page >= total_pages %}disabled{% endif %}">Next</a>
+</div>

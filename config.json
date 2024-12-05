@@ -1,0 +1,22 @@
+{
+    "params":
+    {
+      "local_server":"True",
+      "local_uri": "mysql://root:@localhost/jadistan",
+      "prod_uri":"mysql://root:@localhost/jadistan",
+      "fb_url":"https://facebook.com/",
+      "insta_url":"https://instagram.com/muhammad_anas_031",
+      "github_url": "https://github.com/",
+      "title": "Jadistan",
+      "tag_line": "Testing",
+      "about": "Hi and I am a good boy",
+      "posts_per_page": 3,
+      "login_image":"login.svg",
+      "admin_user":"admin",
+      "admin_pass": "admin123",
+      "upload_location":"C:\\Python\\Website\\static\\uploads",
+      "year": 2024
+  
+    }
+  
+  }

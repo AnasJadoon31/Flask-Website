@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Page Header-->
+<style>
+    textarea {
+        resize: none;
+    }
+    .summernote {
+        background-color: #34373b; /* Adjust this to your desired color */
+    }
+    .note-toolbar {
+        background-color: #34373b; /* Adjust this to your desired color */
+    }
+    .note-editable{
+        background-color: #34373b; /* Adjust this to your desired color */
+        color: azure;
+        font-size: medium;
+        height: auto;
+        max-height: none;
+    }
+</style>
+
+{% if post.cover_img %}
+    {% set fname = "uploads/" + post.cover_img %}
+{% endif %}
+<header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.733), rgb(0, 0, 0)), url('{{ url_for('static', filename=fname) }}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{ post.title }}</h1>
+                    <h2 class="subheading">{{ post.subtitle }}</h2>
+                    <span class="meta">
+                        Posted by
+                        <a href="#!">{{ post.author }}</a>
+                        on {{ post.dated }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Post Content-->
+
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                    <textarea class="summernote" id="content" name="content" placeholder="Content..." oninput="resizeTextarea(this)" style="padding-top: 0.5rem; width:100%;">{{post.content}}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+<script>
+    $(document).ready(function() {
+        $(".summernote").summernote(
+            {           
+                minHeight: null,             // Set minimum height of editor
+                maxHeight: null,             // Set maximum height of editor
+                focus: true, 
+                toolbar: false
+            }
+        );
+        $('.dropdown-toggle').dropdown();
+        $('.summernote').next().find(".note-editable").attr("contenteditable", false);
+    });
+</script>
+
+{% endblock %}

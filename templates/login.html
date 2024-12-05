@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.733), rgb(0, 0, 0)), url('{{ url_for('static', filename='assets/img/admin-bg.jpg') }}');">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Admin Panel</h1>
+                    <span class="subheading">Login to access Admin Panel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-6" style="justify-items:center">
+                
+                <div class="card border-0 rounded-lg mt-5">
+                    <div class="text-center">
+                        <h2 class="my-3">Sign In</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="/dashboard" method="post">
+                            <div class="form-floating mb-3" style=" border-left: 1; border-right: 1;border-top: 1;">
+                                <input type="text" name="uname" class="form-control rounded" id="floatingInput" placeholder="Username" required style="padding-left: 0.5rem;">
+                                <label for="floatingInput" style="padding-left: 0.5rem; color: white; background-color: invisible">Username</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" name="pass" class="form-control rounded" id="floatingPassword" placeholder="Password" required style="padding-left: 0.5rem;">
+                                <label style="padding-left: 0.5rem; color: white; background-color: invisible">Password</label>
+                            </div>
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-lg" type="submit">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

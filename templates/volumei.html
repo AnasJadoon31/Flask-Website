@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    /* Style the navigation menu */
+.navbara {
+    width: 100%;
+    background-color: #555;
+    overflow: auto;
+  }
+  
+  /* Navigation links */
+  .navbara a {
+    float: right;
+    padding: 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    width: 20%; /* Four equal-width links. If you have two links, use 50%, and 33.33% for three links, etc.. */
+    text-align: center; /* If you want the text to be centered */
+  }
+  
+  /* Add a background color on mouse-over */
+  .navbara a:hover {
+    background-color: #027e8f;
+  }
+  
+  /* Style the current/active link */
+  .navbara a.active {
+    background-color: #04AA6D;
+  }
+  
+  /* Add responsiveness - on screens less than 500px, make the navigation links appear on top of each other, instead of next to each other */
+  @media screen and (max-width: 500px) {
+    .navbara a {
+      float: none;
+      display: block;
+      width: 100%;
+      text-align: left; /* If you want the text to be left-aligned on small screens */
+    }
+  }
+  
+</style>
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.733), rgb(0, 0, 0)), url('{{ url_for('static', filename='assets/img/home-bg.jpg') }}');">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>{{params['title']}}</h1>
+                            <h1>V1</h1>
+                            <span class="subheading">By Muhammad Anas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+          <div class="row gx-4 gx-lg-5 justify-content-center">
+              <div class="col-md-10 col-lg-8 col-xl-10">
+                <div class="navbara">
+                  <a href="javascript:void(0);" data-category="Archive">Archive</a>
+                  <a href="javascript:void(0);" data-category="Others">Others</a>
+                  <a href="javascript:void(0);" data-category="Poetry">Poetry</a>
+                  <a href="javascript:void(0);" data-category="Foolish Talks">Foolish Talks</a>
+                  <a href="javascript:void(0);" data-category="General Order">General Orders</a>
+              </div>
+                    <hr>
+                  <!-- Post preview-->
+                  <div id="content-area">
+                    {% include 'content-snippet.html' %}
+                </div>
+                  <!-- Pager-->
+                  <div class="d-flex justify-content-between mb-4">
+                    {% if page > 1 %}
+                    <a class="btn btn-primary text-uppercase" href="?category={{ selected_category }}&page={{ page - 1 }}">← Previous</a>
+                    {% else %}
+                    <a class="btn btn-primary text-uppercase disabled" href="#">← Previous</a>
+                    {% endif %}
+                
+                    {% if page < total_pages %}
+                    <a class="btn btn-primary text-uppercase" href="?category={{ selected_category }}&page={{ page + 1 }}">Next →</a>
+                    {% else %}
+                    <a class="btn btn-primary text-uppercase disabled" href="#">Next →</a>
+                    {% endif %}
+                </div>                
+                      
+              </div>
+          </div>
+        </div>
+        <script>
+            function copyToClipboard(text) {
+                const tempInput = document.createElement('input');
+                tempInput.style.position = 'absolute';
+                tempInput.style.left = '-9999px';
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                
+                tempInput.select();
+                tempInput.setSelectionRange(0, 99999); // For mobile devices
+                
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                
+                alert('Link copied to clipboard!');
+            }
+            </script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                  document.querySelectorAll('.navbara a[data-category]').forEach(function(link) {
+                      link.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent the default link behavior
+            
+                        // Remove 'active' class from all links
+                          document.querySelectorAll('.navbara a').forEach(function(navLink) {
+                              navLink.classList.remove('active');
+                          });
+              
+                        // Add 'active' class to the clicked link
+                          this.classList.add('active');
+            
+                        // Fetch and load the content based on the category and volume
+                          var category = this.getAttribute('data-category');
+                        var volume = 'Volume I'; // Replace with logic if you need a dynamic volume
+            
+                        fetch(`/load-content/${volume}/${category}?page=1`)
+                            .then(response => response.text())
+                            .then(data => {
+                                document.getElementById('content-area').innerHTML = data;
+            
+                                // Get the updated pagination values from the loaded content
+                                var totalPages = parseInt(document.getElementById('content-area').dataset.totalPages);
+                                var currentPage = 1; // Since we loaded the first page
+                                
+                                // Update the pagination links with the selected category and volume
+                                updatePaginationLinks(category, volume, currentPage, totalPages);
+                            })
+                            .catch(error => console.error('Error:', error));
+                      });
+                  });
+              });
+                              
+            function updatePaginationLinks(category, volume, currentPage, totalPages) {
+                var prevBtn = document.getElementById('prev-btn');
+                var nextBtn = document.getElementById('next-btn');
+            
+                // Update hrefs
+                prevBtn.href = `?category=${category}&volume=${volume}&page=${currentPage - 1}`;
+                nextBtn.href = `?category=${category}&volume=${volume}&page=${currentPage + 1}`;
+            
+                // Enable/disable buttons based on page number
+                if (currentPage <= 1) {
+                    prevBtn.classList.add('disabled');
+                    prevBtn.href = '#';
+                } else {
+                    prevBtn.classList.remove('disabled');
+                }
+            
+                if (currentPage >= totalPages) {
+                    nextBtn.classList.add('disabled');
+                    nextBtn.href = '#';
+                } else {
+                    nextBtn.classList.remove('disabled');
+                }
+              }                        
+              </script>   
+          
+            
+{% endblock %}

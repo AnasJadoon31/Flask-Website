@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+<style>
+  .fc-event {
+    background-color: green; /* Default background color for events */
+    color: white; /* Ensures text is visible */
+    border: none; /* Remove border for cleaner look */
+  }
+
+  /* Style the navigation menu */
+  .navbara {
+      width: 100%;
+      background-color: #555;
+      overflow: hidden;
+  }
+
+  .navbara a {
+      float: right;
+      padding: 12px;
+      color: white;
+      text-decoration: none;
+      font-size: 17px;
+      text-align: center;
+      flex-grow: 1;
+  }
+
+  .navbara a:hover {
+      background-color: #027e8f;
+  }
+
+  .navbara a.active {
+      background-color: #04AA6D;
+  }
+
+  .navbara {
+      display: flex;
+      justify-content: space-between;
+  }
+
+  @media screen and (max-width: 500px) {
+      .navbara {
+          flex-direction: column;
+          align-items: flex-start;
+      }
+      .navbara a {
+          width: 100%;
+          text-align: left;
+      }
+  }
+
+  #calendar {
+      max-width: 100%;
+      overflow-x: auto;
+  }
+
+  .fc-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+  }
+
+  .fc-toolbar h2 {
+      font-size: 1.25rem;
+  }
+
+  .fc-button {
+      padding: 0.5rem 1rem;
+  }
+
+  /* Optional: Change event background to green only for specific event dates */
+  .fc-event-green {
+      background-color: green !important;
+  }
+
+</style>
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.733), rgb(0, 0, 0)), url('{{ url_for('static', filename='assets/img/home-bg.jpg') }}');">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>{{params['title']}}</h1>
+                    <span class="subheading">By Muhammad Anas</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-10">
+            <div class="navbara">
+                <a href="#">Volume II</a>
+                <a class="active" href="#">All</a>
+                <a href="#">Volume I</a>
+            </div>
+            <hr>
+            <div id='calendar'></div>
+        </div>
+    </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      events: [
+        {% for post in posts %}
+        {
+          title: '{{ post.title }}',  // The topic of the post
+          start: '{{ post.date }}',   // The date of the post
+          display: 'block'  // Ensures the title appears
+        },
+        {% endfor %}
+      ],
+      eventDidMount: function(info) {
+        // Apply green background to each event (post)
+        info.el.style.backgroundColor = 'green';
+        info.el.style.color = 'white'; // Ensures text is readable on green background
+      },
+      customButtons: {
+        yearSelect: {
+          text: 'Year',
+          click: function() {
+            var year = prompt('Enter a year (e.g., 2024):');
+            if (year && !isNaN(year)) {
+              calendar.gotoDate(`${year}-01-01`);
+            }
+          }
+        },
+        monthSelect: {
+          text: 'Month',
+          click: function() {
+            var month = prompt('Enter a month number (1-12):');
+            if (month && !isNaN(month) && month >= 1 && month <= 12) {
+              var date = calendar.getDate();
+              calendar.gotoDate(`${date.getFullYear()}-${month}-01`);
+            }
+          }
+        }
+      },
+      headerToolbar: {
+        left: 'yearSelect,monthSelect',
+        center: 'title',
+        right: 'prev,next today'
+      }
+    });
+
+    calendar.render();
+  });
+</script>
+
+{% endblock %}

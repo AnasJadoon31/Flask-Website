@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    /* Style the navigation menu */
+.navbara {
+    width: 100%;
+    background-color: #555;
+    overflow: auto;
+  }
+  
+  /* Navigation links */
+  .navbara a {
+    float: right;
+    padding: 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    width: 33.33%; /* Four equal-width links. If you have two links, use 50%, and 33.33% for three links, etc.. */
+    text-align: center; /* If you want the text to be centered */
+  }
+  
+  /* Add a background color on mouse-over */
+  .navbara a:hover {
+    background-color: #027e8f;
+  }
+  
+  /* Style the current/active link */
+  .navbara a.active {
+    background-color: #04AA6D;
+  }
+  
+  /* Add responsiveness - on screens less than 500px, make the navigation links appear on top of each other, instead of next to each other */
+  @media screen and (max-width: 500px) {
+    .navbara a {
+      float: none;
+      display: block;
+      width: 100%;
+      text-align: left; /* If you want the text to be left-aligned on small screens */
+    }
+  }
+  
+</style>
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.733), rgb(0, 0, 0)), url('{{ url_for('static', filename='assets/img/about-bg.jpg') }}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="page-heading">
+                            <h1>About</h1>
+                            <span class="subheading">This is what I do.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="navbara">
+                            <a href="#">Timeline</a>
+                            <a class="active" href="#">About Me</a>
+                            <a href="#">About Jadistan</a>
+                          </div>
+                          <hr>
+                        <p style="text-align: justify; font-size:36px;">{{params['about']}}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+{% endblock %}
