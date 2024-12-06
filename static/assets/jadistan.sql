@@ -3,11 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 20, 2024 at 06:59 PM
+-- Generation Time: Dec 06, 2024 at 05:57 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
-USE jadistan;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -49,11 +48,23 @@ CREATE TABLE `posts` (
   `subtitle` text NOT NULL,
   `slug` varchar(31) NOT NULL,
   `content` text NOT NULL,
+  `cover_img` longtext DEFAULT NULL,
   `img` varchar(50) NOT NULL,
   `img_content` varchar(50) NOT NULL,
+  `category` text NOT NULL,
+  `volume` text NOT NULL,
+  `volume_link` text NOT NULL,
+  `labels` text NOT NULL,
   `author` text NOT NULL,
   `dated` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`sno`, `title`, `subtitle`, `slug`, `content`, `cover_img`, `img`, `img_content`, `category`, `volume`, `volume_link`, `labels`, `author`, `dated`) VALUES
+(1, 'Test', '1222', 'test-post', 'Hi I am Anas', NULL, '', '', 'General Order', 'Volume I', 'volume_i', '', 'Anas', '2024-12-06');
 
 --
 -- Indexes for dumped tables
@@ -85,7 +96,7 @@ ALTER TABLE `contact`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `sno` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
