@@ -1,0 +1,6 @@
+Flask==3.1.0
+flask_sqlalchemy==3.1.1
+pyppeteer==2.0.0
+Requests==2.32.3
+SQLAlchemy==2.0.34
+Werkzeug==3.1.3
